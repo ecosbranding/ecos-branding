@@ -31,6 +31,10 @@
     display: none; /* Se mantiene oculto hasta que alguien da clic */
     box-shadow: 0 0 20px rgba(251, 145, 50, 0.4);
     pointer-events: none;
+    img {
+    pointer-events: auto; /* Permite que el sistema detecte el toque */
+    -webkit-touch-callout: none; /* Bloquea el menú de fotos en iPhone/Safari */
+}
 }
 
         }
@@ -294,24 +298,28 @@
     </script>
     <div id="aviso-proteccion">Contenido protegido por ECOS Branding Studio</div>
 <script>
-    // Bloquea el clic derecho y muestra tu aviso naranja
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault(); 
+    const aviso = document.getElementById('aviso-proteccion');
+
+    function mostrarAviso(e) {
+        e.preventDefault(); // Bloquea la descarga
+        aviso.style.display = 'block'; // Muestra tu mensaje naranja
         
-        const aviso = document.getElementById('aviso-proteccion');
-        aviso.style.display = 'block'; 
-        
-        // Se oculta solo tras 2 segundos
         setTimeout(function() {
             aviso.style.display = 'none';
         }, 2000);
-    }, false);
+    }
 
-    // Evita que arrastren las imágenes (otra forma de descargar)
+    // 1. Bloqueo para Computadora (Clic derecho)
+    document.addEventListener('contextmenu', mostrarAviso, false);
+
+    // 2. Bloqueo para Celulares (Presión larga / Long press)
+    // Esto evita que salga el menú de "Guardar imagen" en Android e iOS
+    document.body.style.webkitTouchCallout = 'none'; 
+    document.body.style.webkitUserSelect = 'none';
+
+    // 3. Bloqueo de arrastre (Drag & Drop)
     document.addEventListener('dragstart', function(e) {
-        if (e.target.nodeName === 'IMG') {
-            e.preventDefault();
-        }
+        if (e.target.nodeName === 'IMG') e.preventDefault();
     }, false);
 </script>
 </body>
