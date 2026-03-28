@@ -15,6 +15,24 @@
             --text: #ffffff;
             --text-dim: #a0a0a0;
             --glass: rgba(255, 255, 255, 0.03);
+            /* Estilo del aviso de protección */
+#aviso-proteccion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #fb9132; /* Tu color naranja de ECOS */
+    padding: 20px 40px;
+    border-radius: 10px;
+    border: 1px solid #fb9132;
+    font-weight: bold;
+    z-index: 9999;
+    display: none; /* Se mantiene oculto hasta que alguien da clic */
+    box-shadow: 0 0 20px rgba(251, 145, 50, 0.4);
+    pointer-events: none;
+}
+
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
@@ -274,5 +292,27 @@
             return false;
         }
     </script>
+    <div id="aviso-proteccion">Contenido protegido por ECOS Branding Studio</div>
+<script>
+    // Bloquea el clic derecho y muestra tu aviso naranja
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault(); 
+        
+        const aviso = document.getElementById('aviso-proteccion');
+        aviso.style.display = 'block'; 
+        
+        // Se oculta solo tras 2 segundos
+        setTimeout(function() {
+            aviso.style.display = 'none';
+        }, 2000);
+    }, false);
+
+    // Evita que arrastren las imágenes (otra forma de descargar)
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.nodeName === 'IMG') {
+            e.preventDefault();
+        }
+    }, false);
+</script>
 </body>
 </html>
