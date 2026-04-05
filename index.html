@@ -155,98 +155,41 @@
     <footer>© 2026 ECOS. TODOS LOS DERECHOS RESERVADOS.</footer>
 
     <a id="wa-btn" href="#">SOLICITAR ACCESO ÉLITE</a>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
 
-    // --- MOTOR DE PARTÍCULAS HÍBRIDO ---
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let pts = [];
-    let mouse = { x: null, y: null };
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
 
-    window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-    window.addEventListener('touchmove', (e) => {
-        if(e.touches.length > 0) {
-            mouse.x = e.touches[0].clientX;
-            mouse.y = e.touches[0].clientY;
+        function initParticles() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            pts = [];
+            for(let i=0; i<50; i++) pts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4});
         }
-    }, { passive: false });
 
-    const resetMouse = () => { mouse.x = null; mouse.y = null; };
-    window.addEventListener('touchend', resetMouse);
-    window.addEventListener('mouseout', resetMouse);
-
-    function initParticles() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        pts = [];
-        const count = window.innerWidth < 768 ? 40 : 65; 
-        for(let i=0; i<count; i++) {
-            pts.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#ff5a81';
+            pts.forEach((p,i) => {
+                p.x+=p.vx; p.y+=p.vy;
+                if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
+                ctx.beginPath(); ctx.arc(p.x,p.y,1,0,Math.PI*2); ctx.fill();
             });
+            requestAnimationFrame(animate);
         }
-    }
 
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#ff5a81';
-        pts.forEach((p, i) => {
-            p.x += p.vx; p.y += p.vy;
-            if (mouse.x !== null && mouse.y !== null) {
-                let dx = mouse.x - p.x;
-                let dy = mouse.y - p.y;
-                let dist = Math.hypot(dx, dy);
-                if (dist < 180) { p.x += dx * 0.03; p.y += dy * 0.03; }
-            }
-            if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2); ctx.fill();
-            for(let j=i+1; j<pts.length; j++) {
-                let d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
-                if(d < 150) {
-                    ctx.strokeStyle = `rgba(255, 90, 129, ${0.18 - d/800})`;
-                    ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
-                }
-            }
-        });
-        requestAnimationFrame(animate);
-    }
-
-    // --- ESTO ES LO QUE FALTA (LÍNEA 215 EN ADELANTE) ---
-    function init() { 
-        initParticles(); 
-        animate(); 
-        AOS.init(); 
-        setTimeout(() => {
-            const intro = document.getElementById('intro');
-            if(intro) intro.style.transform = "translateY(-100%)";
-        }, 2000); 
-    }
-    
-    window.onresize = initParticles;
-
-    const selected = new Set();
-    const btn = document.getElementById('wa-btn');
-    function toggleCard(el, val) {
-        if(selected.has(val)) {
-            selected.delete(val);
-            el.classList.remove('active');
-        } else if(selected.size < 3) {
-            selected.add(val);
-            el.classList.add('active');
-        }
-        if(btn) {
-            btn.style.display = (selected.size === 3) ? 'block' : 'none';
+        function init() { initParticles(); animate(); AOS.init(); setTimeout(() => document.getElementById('intro').style.transform="translateY(-100%)", 2000); }
+        
+        const selected = new Set();
+        const btn = document.getElementById('wa-btn');
+        function toggleCard(el, val) {
+            selected.has(val) ? (selected.delete(val), el.classList.remove('active')) : (selected.size < 3 && (selected.add(val), el.classList.add('active')));
             if(selected.size === 3) {
+                btn.style.display = 'block';
                 btn.href = `https://wa.me/593979010077?text=Interés en: ${Array.from(selected).join(', ')}`;
-            }
+            } else { btn.style.display = 'none'; }
         }
-    }
-</script>
+    </script>
 </body>
 </html>
