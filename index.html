@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ECOS | Elite Asset Systems</title>
+    <title>ECOS | Asset Intelligence OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -12,324 +12,262 @@
         :root { 
             --pink: #ff5a81; 
             --pink-glow: rgba(255, 90, 129, 0.4);
-            --dark: #050505; 
-            --card-bg: rgba(15, 15, 15, 0.8);
-            --border: rgba(255, 255, 255, 0.08);
+            --dark: #030303; 
+            --card-bg: rgba(10, 10, 10, 0.9);
+            --border: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
         }
 
-        /* --- RESET & CURSOR --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* --- ARQUITECTURA BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
         body {
-            background-color: var(--dark); color: #fff;
+            background-color: var(--dark); color: var(--text-main);
             font-family: 'Inter', sans-serif; overflow-x: hidden;
-            scroll-behavior: smooth; cursor: default;
+            line-height: 1.6;
         }
 
-        /* --- PRE-LOADER (IDENTIDAD DE MARCA) --- */
-        #loader {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 1s ease;
-        }
-        .loader-content { text-align: center; }
-        .loader-bar { width: 200px; height: 1px; background: #222; margin-top: 20px; position: relative; }
-        .loader-fill { width: 0%; height: 100%; background: var(--pink); box-shadow: 0 0 15px var(--pink); }
-
-        /* --- BACKGROUND DINÁMICO --- */
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.6; }
-
-        /* --- NAV (HEADER INTELIGENTE) --- */
-        nav {
-            position: fixed; top: -100px; width: 100%; padding: 20px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
-            z-index: 5000; border-bottom: 1px solid var(--border);
-            transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        nav.visible { top: 0; }
-        .nav-logo { width: 100px; }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; position: relative; z-index: 10; text-align: center;
-            padding: 20px;
+        canvas#particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
         }
 
-        .hero-logo-container {
-            width: 320px; max-width: 80%; margin-bottom: 40px;
-            animation: float 6s ease-in-out infinite;
-            filter: drop-shadow(0 20px 40px rgba(255, 90, 129, 0.15));
-        }
-        @keyframes float { 
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.02); }
-        }
-        .hero-logo-container img { width: 100%; height: auto; }
-
-        .hero h1 { 
-            font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 12px; 
-            text-transform: uppercase; color: var(--pink); font-weight: 300;
+        /* --- LOGO ENGINE (PRO) --- */
+        .header-container {
+            position: relative; height: 100vh; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; z-index: 10; padding: 0 20px;
         }
 
-        /* --- CONTENEDOR MAESTRO (RESPONSIVE) --- */
-        .main-wrapper {
-            position: relative; z-index: 100; max-width: 1400px; margin: 0 auto;
-            padding: 100px 5%;
+        .logo-wrapper {
+            width: clamp(200px, 40vw, 450px); /* Escala perfecta en móvil y PC */
+            position: relative; will-change: transform, filter;
+            transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* --- GRID DE CONTENIDO (ADAPTATIVO PC/MOBILE) --- */
-        .info-section {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-            margin-bottom: 150px; align-items: center;
+        .logo-wrapper img {
+            width: 100%; height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 90, 129, 0.2));
+            animation: logoPulse 4s ease-in-out infinite;
         }
 
-        @media (max-width: 900px) {
-            .info-section { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .hero-logo-container { width: 220px; }
-            .giant-text { font-size: 3rem !important; }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 20px rgba(255, 90, 129, 0.1)); }
+            50% { transform: scale(1.03); filter: brightness(1.2) drop-shadow(0 0 40px rgba(255, 90, 129, 0.4)); }
         }
 
-        .giant-text {
-            font-family: 'Montserrat'; font-size: 4.5rem; line-height: 0.9;
-            letter-spacing: -3px; margin-bottom: 30px;
+        .hero-title {
+            margin-top: 30px; text-align: center;
         }
-        .giant-text span { color: var(--pink); }
 
-        .content-box { padding-left: 20px; border-left: 1px solid var(--pink); }
-        .content-box p { font-size: 1.1rem; line-height: 1.8; opacity: 0.7; font-weight: 300; }
+        .hero-title h1 {
+            font-family: 'Montserrat'; font-size: clamp(0.6rem, 2vw, 0.9rem);
+            letter-spacing: clamp(8px, 1.5vw, 15px);
+            text-transform: uppercase; color: var(--pink); opacity: 0.8;
+        }
 
-        /* --- SISTEMA DE ACTIVOS (GRID ÉLITE) --- */
-        .solutions-header { text-align: center; margin-bottom: 80px; }
-        .solutions-header h2 { font-family: 'Montserrat'; font-size: 2rem; letter-spacing: 5px; opacity: 0.3; }
+        /* --- GRID DINÁMICO (RESPONSIVE SEAMLESS) --- */
+        .content-master {
+            position: relative; z-index: 20; width: 100%;
+            max-width: 1400px; margin: 0 auto; padding: 0 5%;
+        }
 
-        .asset-grid {
+        .section-split {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: clamp(40px, 8vw, 120px); align-items: center; min-height: 80vh;
+            padding: 100px 0;
+        }
+
+        .giant-heading {
+            font-family: 'Montserrat'; font-size: clamp(2.5rem, 8vw, 6rem);
+            line-height: 0.9; letter-spacing: -3px; font-weight: 900;
+        }
+        .giant-heading span { color: var(--pink); }
+
+        .body-text {
+            font-size: clamp(1rem, 1.5vw, 1.25rem); font-weight: 300;
+            opacity: 0.6; border-left: 2px solid var(--pink); padding-left: 30px;
+        }
+
+        /* --- CORE SOLUTIONS GRID --- */
+        .solutions-box { padding: 100px 0; text-align: center; }
+        
+        .grid-asset {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px; margin-top: 50px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px; margin-top: 60px;
         }
 
         .asset-card {
             background: var(--card-bg); border: 1px solid var(--border);
-            padding: 50px 20px; border-radius: 20px; text-align: center;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            backdrop-filter: blur(10px); position: relative; overflow: hidden;
-            cursor: pointer;
-        }
-        .asset-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 90, 129, 0.15) 0%, transparent 80%);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .asset-card:hover::before { opacity: 1; }
-        .asset-card:hover { border-color: var(--pink); transform: translateY(-10px); }
-
-        .asset-card h3 { 
-            font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; color: #888;
-            transition: 0.3s; pointer-events: none;
+            padding: 60px 20px; border-radius: 24px; cursor: pointer;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .asset-card.selected {
-            background: #fff; border: none; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        .asset-card h3 {
+            font-size: 0.7rem; letter-spacing: 3px; font-weight: 900;
+            color: #555; transition: 0.4s;
         }
-        .asset-card.selected h3 { color: #000; }
 
-        /* --- LLAMADO A LA ACCIÓN (PRO) --- */
-        .cta-wrap {
-            margin-top: 100px; display: flex; flex-direction: column; align-items: center;
+        .asset-card:hover {
+            border-color: var(--pink); transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .btn-access {
-            display: none; padding: 25px 60px; background: #fff; color: #000;
-            text-decoration: none; font-weight: 900; letter-spacing: 5px;
-            border-radius: 100px; text-transform: uppercase; font-size: 0.8rem;
-            box-shadow: 0 0 50px rgba(255,255,255,0.1);
-            transition: 0.4s; animation: pulseGlow 2s infinite;
+
+        .asset-card.active {
+            background: #fff; border: none;
         }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
-            100% { box-shadow: 0 0 0 30px rgba(255,255,255,0); }
+        .asset-card.active h3 { color: #000; transform: scale(1.1); }
+
+        /* --- BOTÓN CALL TO ACTION (ELITE) --- */
+        .cta-container {
+            margin-top: 80px; min-height: 100px;
         }
-        .btn-access:hover { background: var(--pink); color: #fff; transform: scale(1.05); }
+
+        .btn-brutal {
+            display: none; position: relative;
+            padding: 25px 60px; background: #fff; color: #000;
+            text-decoration: none; font-weight: 900; border-radius: 100px;
+            font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+            transition: 0.4s ease;
+        }
+
+        .btn-brutal:hover {
+            background: var(--pink); color: #fff; transform: scale(1.1);
+            box-shadow: 0 0 50px var(--pink-glow);
+        }
 
         /* --- FOOTER --- */
         footer {
-            padding: 100px 5%; background: #000; text-align: center;
-            border-top: 1px solid var(--border);
+            padding: 100px 0; border-top: 1px solid var(--border);
+            text-align: center; opacity: 0.4; font-size: 0.6rem; letter-spacing: 5px;
         }
-        .footer-logo { width: 120px; opacity: 0.3; margin-bottom: 20px; }
 
-        /* --- ANIMACIONES DE SISTEMA --- */
-        [data-aos] { pointer-events: none; }
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 768px) {
+            .section-split { text-align: center; }
+            .body-text { border-left: none; border-top: 2px solid var(--pink); padding: 30px 0 0 0; }
+            .grid-asset { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <img src="logo-rosa.svg" width="150" alt="Logo">
-            <div class="loader-bar"><div class="loader-fill" id="fill"></div></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <section class="header-container">
+        <div class="logo-wrapper" id="mainLogo">
+            <img src="logo-rosa.svg" alt="ECOS Logo">
         </div>
-    </div>
-
-    <canvas id="bg-canvas"></canvas>
-
-    <nav id="navbar">
-        <img src="logo-rosa.svg" class="nav-logo" alt="Logo">
-        <div style="font-size: 0.6rem; letter-spacing: 5px; opacity: 0.5;">ECOS SYSTEM</div>
-    </nav>
-
-    <section class="hero">
-        <div class="hero-logo-container">
-            <img src="logo-rosa.svg" alt="ECOS Strategic Solutions">
+        <div class="hero-title" data-aos="fade-up">
+            <h1>Strategic Asset Intelligence</h1>
         </div>
-        <h1 data-aos="fade-up">Asset Intelligence Systems</h1>
     </section>
 
-    <div class="main-wrapper">
+    <div class="content-master">
         
-        <section class="info-section">
-            <div class="giant-text" data-aos="fade-right">
-                BEYOND<br>THE WEB<span>.</span>
+        <section class="section-split">
+            <div class="giant-heading" data-aos="fade-right">
+                THE NEXT<br>LEVEL<span>.</span>
             </div>
-            <div class="content-box" data-aos="fade-left">
-                <p>
-                    Desde 2019, bajo la infraestructura de <strong>ORCA Studios</strong>, hemos transformado la interacción digital en activos estratégicos. Operando en <strong>Ecuador y Colombia</strong>, blindamos marcas élite mediante ingeniería visual y sistemas de fidelización premium.
-                </p>
+            <div class="body-text" data-aos="fade-left">
+                Desde 2019, bajo la infraestructura técnica de <strong>ORCA Studios</strong>, hemos redefinido la interacción digital. Operando en <strong>Ecuador y Colombia</strong>, construimos sistemas de fidelización que no solo se ven bien, sino que generan valor real.
             </div>
         </section>
 
-        <section class="info-section" style="direction: rtl; text-align: right;">
-            <div class="giant-text" data-aos="fade-left">
-                DATA<br>DRIVEN<span>.</span>
-            </div>
-            <div class="content-box" data-aos="fade-right" style="border-left: 0; border-right: 1px solid var(--pink); padding-right: 20px; direction: ltr;">
-                <p>
-                    Gestionamos más de 20 marcas con un enfoque en la retención del 100%. No diseñamos páginas, construimos infraestructuras que garantizan el crecimiento de tus activos digitales.
-                </p>
-            </div>
-        </section>
+        <section class="solutions-box">
+            <h2 style="font-family: 'Montserrat'; letter-spacing: 8px; opacity: 0.2; font-size: 1.5rem;">SOLUTIONS CORE</h2>
+            <p style="font-size: 0.7rem; letter-spacing: 2px; margin-top: 10px; opacity: 0.5;">SELECCIONA 3 EJES PARA DESBLOQUEAR ACCESO</p>
 
-        <section class="configurator">
-            <div class="solutions-header">
-                <h2>CORE SOLUTIONS</h2>
-                <p style="letter-spacing: 3px; font-size: 0.7rem; opacity: 0.5; margin-top: 10px;">CONFIGURA 3 EJES PARA ACCESO ESTRATÉGICO</p>
+            <div class="grid-asset" id="assetGrid">
+                <div class="asset-card" data-id="Fidelización"><h3>FIDELIZACIÓN</h3></div>
+                <div class="asset-card" data-id="Branding"><h3>BRANDING</h3></div>
+                <div class="asset-card" data-id="Activos"><h3>ACTIVOS</h3></div>
+                <div class="asset-card" data-id="Web Pro"><h3>WEB PRO</h3></div>
+                <div class="asset-card" data-id="Marketing"><h3>MARKETING</h3></div>
+                <div class="asset-card" data-id="Audiovisual"><h3>VIDEO</h3></div>
+                <div class="asset-card" data-id="Identidad"><h3>IDENTIDAD</h3></div>
+                <div class="asset-card" data-id="Estrategia"><h3>ESTRATEGIA</h3></div>
             </div>
 
-            <div class="asset-grid" id="assetGrid">
-                <div class="asset-card" data-name="Fidelización"><h3>FIDELIZACIÓN</h3></div>
-                <div class="asset-card" data-name="Branding"><h3>BRANDING</h3></div>
-                <div class="asset-card" data-name="Activos"><h3>ACTIVOS</h3></div>
-                <div class="asset-card" data-name="Web Pro"><h3>WEB PRO</h3></div>
-                <div class="asset-card" data-name="Marketing"><h3>MARKETING</h3></div>
-                <div class="asset-card" data-name="Producción"><h3>VIDEO</h3></div>
-                <div class="asset-card" data-name="Identidad"><h3>IDENTIDAD</h3></div>
-                <div class="asset-card" data-name="Estrategia"><h3>ESTRATEGIA</h3></div>
-            </div>
-
-            <div class="cta-wrap">
-                <a href="#" id="accessBtn" class="btn-access">SOLICITAR ACCESO ESTRATÉGICO</a>
+            <div class="cta-container">
+                <a href="#" id="finalCTA" class="btn-brutal">SOLICITAR CONSULTORÍA ÉLITE</a>
             </div>
         </section>
 
     </div>
 
     <footer>
-        <img src="logo-rosa.svg" class="footer-logo">
-        <div style="opacity: 0.2; font-size: 0.6rem; letter-spacing: 5px;">
-            QUITO • MEDELLÍN • © 2026 ECOS SYSTEM
-        </div>
+        <img src="logo-rosa.svg" width="80" style="margin-bottom: 20px; opacity: 0.5;"><br>
+        QUITO • MEDELLÍN • © 2026 ECOS SYSTEM
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 1. CARGADOR DE SISTEMA
-        let fill = document.getElementById('fill');
-        let width = 0;
-        let interval = setInterval(() => {
-            width += Math.random() * 20;
-            if (width >= 100) {
-                width = 100;
-                clearInterval(interval);
-                setTimeout(() => {
-                    document.getElementById('loader').style.opacity = '0';
-                    setTimeout(() => document.getElementById('loader').remove(), 1000);
-                    AOS.init({ duration: 1200 });
-                }, 500);
-            }
-            fill.style.width = width + '%';
-        }, 150);
+        AOS.init({ duration: 1000, once: true });
 
-        // 2. MOTOR DE FONDO (NEURAL NET)
-        const canvas = document.getElementById('bg-canvas');
+        // --- MOTOR DE PARTÍCULAS (Z-INDEX 1) ---
+        const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        let points = [];
-        function initCanvas() {
+        let dots = [];
+        function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            points = [];
-            for(let i=0; i<80; i++) points.push({
+            dots = [];
+            for(let i=0; i<60; i++) dots.push({
                 x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5
+                vX: (Math.random()-0.5)*0.6, vY: (Math.random()-0.5)*0.6
             });
         }
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = '#ff5a81';
-            points.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>canvas.width) p.vx *= -1;
-                if(p.y<0 || p.y>canvas.height) p.vy *= -1;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
-                for(let j=i+1; j<points.length; j++) {
-                    let p2 = points[j];
-                    let d = Math.hypot(p.x-p2.x, p.y-p2.y);
-                    if(d<150) {
-                        ctx.strokeStyle = `rgba(255, 90, 129, ${0.4 - d/150})`;
-                        ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-                    }
-                }
+        function render() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = 'rgba(255, 90, 129, 0.3)';
+            dots.forEach(d => {
+                d.x += d.vX; d.y += d.vY;
+                if(d.x<0 || d.x>canvas.width) d.vX *= -1;
+                if(d.y<0 || d.y>canvas.height) d.vY *= -1;
+                ctx.beginPath(); ctx.arc(d.x, d.y, 1.5, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(render);
         }
-        initCanvas(); animate(); window.onresize = initCanvas;
+        init(); render(); window.onresize = init;
 
-        // 3. HEADER INTELIGENTE & SCROLL
-        const nav = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) nav.classList.add('visible');
-            else nav.classList.remove('visible');
-        });
-
-        // 4. SISTEMA DE SELECCIÓN DE ACTIVOS
-        const active = new Set();
+        // --- LÓGICA DE SELECCIÓN (INTERACTIVA) ---
+        const activeAssets = new Set();
         const cards = document.querySelectorAll('.asset-card');
-        const cta = document.getElementById('accessBtn');
+        const cta = document.getElementById('finalCTA');
 
         cards.forEach(card => {
-            card.addEventListener('mousemove', e => {
-                let rect = card.getBoundingClientRect();
-                card.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-                card.style.setProperty('--y', (e.clientY - rect.top) + 'px');
-            });
-
             card.addEventListener('click', () => {
-                const name = card.getAttribute('data-name');
-                if (active.has(name)) {
-                    active.delete(name);
-                    card.classList.remove('selected');
-                } else if (active.size < 3) {
-                    active.add(name);
-                    card.classList.add('selected');
-                    if(navigator.vibrate) navigator.vibrate(40);
+                const id = card.getAttribute('data-id');
+                if (activeAssets.has(id)) {
+                    activeAssets.delete(id);
+                    card.classList.remove('active');
+                } else if (activeAssets.size < 3) {
+                    activeAssets.add(id);
+                    card.classList.add('active');
+                    if(navigator.vibrate) navigator.vibrate(50); // Feedback háptico
                 }
-                
-                if (active.size === 3) {
-                    cta.style.display = 'block';
-                    cta.href = `https://wa.me/593979010077?text=${encodeURIComponent('SISTEMA ECOS: He seleccionado: ' + Array.from(active).join(', ') + '. Deseo una sesión estratégica.')}`;
+
+                if (activeAssets.size === 3) {
+                    cta.style.display = 'inline-block';
+                    cta.style.animation = 'fadeInUp 0.5s forwards';
+                    cta.href = `https://wa.me/593979010077?text=SISTEMA%20ECOS:%20He%20configurado%20mi%20marca%20con:%20${Array.from(activeAssets).join(', ')}`;
                 } else {
                     cta.style.display = 'none';
                 }
             });
+        });
+
+        // --- PARALLAX DEL LOGO (ELIMINA LA BÁSICA ANTERIOR) ---
+        window.addEventListener('scroll', () => {
+            const scroll = window.scrollY;
+            const logo = document.getElementById('mainLogo');
+            logo.style.transform = `translateY(${scroll * 0.5}px) scale(${1 - scroll/2000})`;
+            logo.style.opacity = 1 - (scroll/700);
         });
     </script>
 </body>
