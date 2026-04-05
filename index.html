@@ -249,13 +249,22 @@
 document.getElementById('wa-btn').addEventListener('click', function(e) {
     e.preventDefault();
     
-    // 1. Captura correctamente los textos de las tarjetas seleccionadas
-    const seleccionadas = Array.from(document.querySelectorAll('.card.selected'))
-                               .map(card => card.querySelector('h4').innerText.trim());
+    // 1. Buscamos todas las tarjetas. El video muestra que al hacer clic cambian de estilo
+    // Ajustamos para capturar el nombre correcto del servicio
+    const seleccionadas = [];
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        // Verificamos si la tarjeta tiene el estilo de seleccionada (borde rosado/brillo)
+        if (card.classList.contains('selected') || card.style.borderColor === 'var(--pink)' || card.getAttribute('data-selected') === 'true') {
+            const titulo = card.querySelector('h4').innerText.trim();
+            seleccionadas.push(titulo);
+        }
+    });
     
     let mensajeBase = "Hola ECOS. He seleccionado mis activos tácticos";
     
-    // 2. Conecta las elecciones con el texto de forma fluida
+    // 2. Si hay elecciones, las incluimos de forma elegante
     if (seleccionadas.length > 0) {
         mensajeBase += " en las áreas de: " + seleccionadas.join(', ') + ".";
     } else {
@@ -264,7 +273,7 @@ document.getElementById('wa-btn').addEventListener('click', function(e) {
     
     mensajeBase += " Solicito evaluación para elevar el impacto de mi proyecto bajo su ingeniería estratégica. Quedo a la espera de la apertura de sesión.";
 
-    // 3. Genera la URL usando la variable dinámica mensajeBase
+    // 3. Abrimos WhatsApp con el mensaje completo
     const waUrl = "https://wa.me/593979010077?text=" + encodeURIComponent(mensajeBase);
     window.open(waUrl, '_blank');
 });
@@ -339,6 +348,7 @@ document.getElementById('wa-btn').addEventListener('click', function(e) {
                     }
                 }
             });
+            
             requestAnimationFrame(animate);
         }
 
@@ -355,19 +365,14 @@ document.getElementById('wa-btn').addEventListener('click', function(e) {
         const btn = document.getElementById('wa-btn');
 
         function toggleCard(el, val) {
-            if(selected.has(val)) {
-                selected.delete(val);
-                el.classList.remove('active');
-            } else if(selected.size < 3) {
-                selected.add(val);
-                el.classList.add('active');
-            }
-
-            if(selected.size === 3) {
-                btn.style.display = 'block';
-                btn.href = `https://wa.me/593979010077?text=Acceso%20ECOS:%20Interés%20en%20${Array.from(selected).join(', ')}`;
-            } else {
-                btn.style.display = 'none';
+    if (selected.has(val)) {
+        selected.delete(val);
+        el.classList.remove('active', 'selected'); // Añadimos selected aquí
+    } else if (selected.size < 3) {
+        selected.add(val);
+        el.classList.add('active', 'selected'); // Añadimos selected aquí
+    }
+        }
             }
         }
     </script>
