@@ -3,221 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ECOS | ORCA Studios Strategic Systems</title>
+    <title>ECOS | Soluciones Estratégicas</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="ecos-logo-white.png">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#ff5a81">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --brand-pink: #ff5a81; /* Tu Color de Marca Confirmado */
-            --bg-dark: #0a0a0a; /* Fondo Oscuro Premium */
-            --text-main: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05); /* Efecto Vidrio Tendencia */
+            --pink: #ff5a81; 
+            --dark: #0a0a0a; 
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            margin: 0; background: var(--dark); color: #fff;
+            font-family: 'Inter', sans-serif; scroll-behavior: smooth;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
-        /* === 1. PORTADA ANIMADA (HERO SECTION) === */
+        /* --- HERO CON AURA ANIMADA --- */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-            overflow: hidden;
-            text-align: center;
+            height: 60vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; text-align: center;
         }
-
-        /* Animación de aura rosa fluida en el fondo */
         .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255, 90, 129, 0.15) 0%, transparent 60%);
-            animation: moveAura 15s infinite alternate ease-in-out;
-            z-index: 1;
+            content: ''; position: absolute; width: 150%; height: 150%;
+            background: radial-gradient(circle, rgba(255, 90, 129, 0.15) 0%, transparent 50%);
+            animation: moveAura 12s infinite alternate; z-index: 1;
         }
+        @keyframes moveAura { from { transform: translate(-10%, -10%); } to { transform: translate(10%, 10%); } }
 
-        @keyframes moveAura {
-            0% { transform: translate(-15%, -15%) rotate(0deg); }
-            100% { transform: translate(15%, 15%) rotate(10deg); }
-        }
-
-        .hero-content {
-            z-index: 2;
-            padding: 0 20px;
-        }
-
-        /* Logo flotante impecable de Image 48 */
+        /* --- LOGO CORREGIDO --- */
         .logo-main {
-            width: 140px;
-            height: 140px;
-            background: var(--brand-pink);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            box-shadow: 0 0 50px rgba(255, 90, 129, 0.7);
-            animation: floatLogo 5s ease-in-out infinite;
-            border: 4px solid #fff; /* Borde blanco nítido */
+            width: 130px; height: 130px; background: var(--pink); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
+            box-shadow: 0 0 50px rgba(255, 90, 129, 0.6); border: 4px solid #fff;
+            animation: float 5s ease-in-out infinite; z-index: 2; position: relative;
         }
-        
-        @keyframes floatLogo {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.02); }
-        }
+        .logo-main img { width: 65%; height: auto; }
 
-        h1 { 
-            font-size: 3.5rem; letter-spacing: 6px; font-weight: 700; margin: 0; 
-            text-transform: uppercase;
-            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .subtitle { 
-            color: var(--brand-pink); letter-spacing: 3px; font-weight: 300; 
-            margin: 10px 0 40px; 
-            font-size: 1.1rem;
-        }
-
-        /* Botón Pro adaptable al color de marca */
-        .btn-cta {
-            background: #fff; color: #000;
-            padding: 18px 50px; border-radius: 50px;
-            text-decoration: none; font-weight: bold;
-            display: inline-block; transition: 0.3s ease;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
-        }
-
-        .btn-cta:hover { 
-            background: var(--brand-pink); color: #fff; 
-            box-shadow: 0 15px 40px rgba(255, 90, 129, 0.4);
-            transform: translateY(-3px);
-        }
-
-        /* === 2. SECCIÓN DE SERVICIOS (Glassmorphism) === */
-        .services {
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        /* --- SECCIÓN DE SELECCIÓN --- */
+        .services-section { padding: 40px 20px; text-align: center; }
+        .grid-12 {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px; max-width: 1100px; margin: 30px auto;
         }
 
         .service-card {
-            background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            padding: 50px;
-            border-radius: 30px;
-            transition: 0.4s ease;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
+            padding: 25px 10px; border-radius: 22px; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; backdrop-filter: blur(5px);
         }
+        .service-card.selected {
+            border-color: var(--pink); background: rgba(255, 90, 129, 0.15);
+            transform: scale(1.08); box-shadow: 0 10px 20px rgba(255, 90, 129, 0.2);
+        }
+        .service-card h4 { font-size: 0.75rem; margin: 0; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
         
-        /* Efecto de brillo al pasar el mouse */
-        .service-card::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
+        .counter-badge {
+            background: rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 30px;
+            font-size: 0.85rem; color: var(--pink); border: 1px solid var(--pink);
+            display: inline-block; margin-bottom: 20px; font-weight: bold;
         }
 
-        .service-card:hover {
-            border-color: var(--brand-pink);
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.07);
+        /* --- WHATSAPP FLOTANTE --- */
+        .wa-float {
+            position: fixed; bottom: 35px; right: 35px;
+            background: #25d366; color: #fff; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); z-index: 100;
+            text-decoration: none; transition: 0.5s;
+            visibility: hidden; opacity: 0; transform: translateY(100px);
         }
+        .wa-float.visible { visibility: visible; opacity: 1; transform: translateY(0); animation: pulseWa 2s infinite; }
         
-        .service-card:hover::after { left: 100%; }
+        @keyframes pulseWa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-        .service-card h3 { 
-            color: var(--brand-pink); margin-top: 0; 
-            font-size: 1.5rem; letter-spacing: 1px;
-        }
-        
-        .service-card p {
-            color: #ccc; line-height: 1.8; font-weight: 300; font-size: 0.95rem;
-        }
-
-        /* === 3. SECCIÓN DE BRANDING FOCUS (Tu especialidad) === */
-        .branding-focus {
-            padding: 100px 20px;
-            background: #000;
-            text-align: center;
-            border-top: 1px solid #1a1a1a;
-        }
-        
-        .branding-focus h2 {
-            font-size: 2.5rem; letter-spacing: 3px; font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        /* === 4. FOOTER PROFESIONAL === */
-        footer {
-            text-align: center; padding: 60px 20px; color: #444; font-size: 0.8rem;
-            border-top: 1px solid #1a1a1a; letter-spacing: 1px; line-height: 1.8;
+        .btn-order {
+            background: #fff; color: #000; padding: 18px 45px;
+            border-radius: 50px; text-decoration: none; font-weight: 800;
+            display: none; margin: 30px auto; letter-spacing: 2px; font-size: 0.8rem;
+            transition: 0.3s; box-shadow: 0 10px 25px rgba(255,255,255,0.1);
         }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <div class="hero-content">
-            <div class="logo-main" style="margin: 0 auto 30px;">
-                <img src="ecos-logo-white.png" style="width: 60%;" alt="ECOS Logo">
+        <div style="z-index: 2;">
+            <div class="logo-main">
+                <img src="logo-blanco.svg" alt="ECOS Logo">
             </div>
-            <h1>ECOS</h1>
-            <p class="subtitle">LOYALTY & STRATEGIC ASSET SYSTEM</p>
-            <a href="#services" class="btn-cta">EXPLORAR SOLUCIONES</a>
+            <h1 style="font-family: 'Montserrat'; letter-spacing: 6px;">ECOS</h1>
+            <p style="color:var(--pink); letter-spacing: 4px; font-size: 0.8rem; font-weight: 300;">STRATEGIC ASSET SYSTEMS</p>
         </div>
     </section>
 
-    <section id="services" class="services">
-        <div class="service-card">
-            <h3>Fidelización Premium</h3>
-            <p>Sistemas de lealtad digitales diseñados por ORCA Studios para generar impacto permanente y permanencia del cliente utilizando tecnología PWA de vanguardia.</p>
+    <section class="services-section">
+        <div class="counter-badge" id="selection-text">ELIGE 3 SERVICIOS PARA COTIZAR</div>
+        
+        <div class="grid-12" id="servicesGrid">
+            <div class="service-card" data-name="Fidelización PWA"><h4>Fidelización</h4></div>
+            <div class="service-card" data-name="Consultoría Branding"><h4>Branding</h4></div>
+            <div class="service-card" data-name="Gestión de Activos"><h4>Activos</h4></div>
+            <div class="service-card" data-name="Desarrollo Web Pro"><h4>Web Pro</h4></div>
+            <div class="service-card" data-name="Marketing Digital"><h4>Marketing</h4></div>
+            <div class="service-card" data-name="Producción de Video"><h4>Audiovisual</h4></div>
+            <div class="service-card" data-name="Identidad Visual"><h4>Identidad</h4></div>
+            <div class="service-card" data-name="Estrategia Ventas"><h4>Estrategia</h4></div>
+            <div class="service-card" data-name="Gestión Eventos"><h4>Eventos</h4></div>
+            <div class="service-card" data-name="Publicidad BTL"><h4>Publicidad</h4></div>
+            <div class="service-card" data-name="Diseño UI/UX"><h4>UI/UX</h4></div>
+            <div class="service-card" data-name="Social Media Plan"><h4>Social Media</h4></div>
         </div>
-        <div class="service-card">
-            <h3>Consultoría de Branding</h3>
-            <p>Desarrollo de identidad visual estratégica y arquitectura de marca. Creamos activos de alto rendimiento para marcas que buscan diferenciación y valor.</p>
-        </div>
-        <div class="service-card">
-            <h3>Gestión de Activos</h3>
-            <p>Control total e instantáneo de inventario y activos digitales. Acceso blindado y validación vía QR de alto rendimiento.</p>
-        </div>
-    </section>
-    
-    <section class="branding-focus">
-        <h2>ORCA Studios</h2>
-        <p class="subtitle">BRANDING ES ESTRATEGIA, NO SOLO DISEÑO</p>
-        <p style="color: #666; max-width: 600px; margin: 0 auto 40px; line-height: 1.8; font-weight: 300;">Potenciamos el valor de ECOS integrando tu visión de branding en cada interacción técnica. Un sistema blindado, estéticamente impecable.</p>
+        
+        <a href="#" id="orderBtn" class="btn-order">INICIAR ASESORÍA</a>
     </section>
 
-    <footer>
-        <img src="ecos-horizontal-pink.png" style="width: 100px; margin-bottom: 20px; opacity: 0.5;" alt="ECOS Horizontal">
-        <br>
-        ORCA STUDIOS • DIVISIÓN DE SISTEMAS ESTRATÉGICOS <br>
-        © 2026 ECOS SYSTEM • QUITO • COLOMBIA
+    <a href="#" class="wa-float" id="waButton" target="_blank">
+        <svg width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l5.053-1.326A7.817 7.817 0 0 0 7.994 14.521h.005c4.367 0 7.926-3.558 7.93-7.93a7.856 7.856 0 0 0-2.328-5.265zM7.994 13.066h-.005a6.708 6.708 0 0 1-3.111-.767l-.223-.132-3.045.797.81-2.956-.144-.23a6.723 6.723 0 0 1-1.036-3.593c0-3.704 3.015-6.718 6.723-6.718a6.712 6.712 0 0 1 4.752 1.972 6.713 6.713 0 0 1 1.974 4.756c-.004 3.705-3.018 6.72-6.726 6.72zM11.57 9.477c-.19-.094-.1.127-.476-.452-.074-.112-.135-.24-.226-.34-.403-.441-.837-.808-1.356-1.076-.188-.097-.303-.083-.438.067-.136.15-.521.65-.638.783-.117.133-.234.15-.425.055-.19-.095-.802-.296-1.528-.944-.564-.504-.944-1.128-1.055-1.317-.112-.19-.012-.294.082-.388.086-.085.19-.22.285-.33.095-.11.127-.188.19-.312.063-.125.032-.234-.015-.33-.048-.094-.425-1.025-.583-1.405-.154-.37-.31-.32-.425-.326-.108-.005-.233-.006-.358-.006-.125 0-.328.047-.5.234-.172.188-.656.641-.656 1.562 0 .922.672 1.813.766 1.938.094.125 1.32 2.015 3.197 2.82.447.192.795.307 1.067.393.448.143.855.123 1.176.075.358-.053 1.098-.448 1.255-.88.156-.433.156-.805.109-.88-.047-.075-.172-.117-.362-.211z"/>
+        </svg>
+    </a>
+
+    <footer style="text-align: center; padding: 40px; color: #222; font-size: 0.7rem; letter-spacing: 2px;">
+        ORCA STUDIOS • QUITO • COLOMBIA
     </footer>
 
+    <script>
+        const selected = new Set();
+        const cards = document.querySelectorAll('.service-card');
+        const waButton = document.getElementById('waButton');
+        const orderBtn = document.getElementById('orderBtn');
+        const selectionText = document.getElementById('selection-text');
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.getAttribute('data-name');
+                
+                if (selected.has(name)) {
+                    selected.delete(name);
+                    card.classList.remove('selected');
+                } else if (selected.size < 3) {
+                    selected.add(name);
+                    card.classList.add('selected');
+                    if (navigator.vibrate) navigator.vibrate(50);
+                }
+
+                updateUI();
+            });
+        });
+
+        function updateUI() {
+            const count = selected.size;
+            selectionText.innerText = count === 3 ? "¡LISTO! PULSA EL BOTÓN" : `SELECCIONADOS: ${count} DE 3`;
+            selectionText.style.borderColor = count === 3 ? "#25d366" : "var(--pink)";
+            selectionText.style.color = count === 3 ? "#25d366" : "var(--pink)";
+            
+            if (count === 3) {
+                const services = Array.from(selected).join(', ');
+                const msg = encodeURIComponent(`¡Hola ECOS! Me interesa la asesoría para estos 3 servicios: ${services}.`);
+                // Número actualizado según tu mensaje
+                const finalUrl = `https://wa.me/593979010077?text=${msg}`;
+                
+                waButton.href = finalUrl;
+                waButton.classList.add('visible');
+                orderBtn.style.display = 'block';
+                orderBtn.href = finalUrl;
+            } else {
+                waButton.classList.remove('visible');
+                orderBtn.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
