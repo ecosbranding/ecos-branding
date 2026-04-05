@@ -3,155 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ECOS | Strategic Asset Intelligence</title>
+    <title>ECOS | Strategic OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff5a81; --dark: #050505; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); }
+        :root { 
+            --pink: #ff5a81; 
+            --dark: #050505; 
+            --glass: rgba(255, 255, 255, 0.03); 
+            --border: rgba(255, 255, 255, 0.08); 
+        }
 
+        /* --- BASE ANTI-ERRORES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- LOGO ECOS --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 25px 6%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .nav-logo { width: 80px; filter: drop-shadow(0 0 15px var(--pink)); transition: 0.5s; }
+        /* --- FONDO DINÁMICO --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Detrás de todo pero sobre el fondo negro */
+            pointer-events: none;
+            opacity: 0.6;
+        }
 
-        /* --- HERO & REVEAL --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .hero img { width: clamp(200px, 30vw, 400px); margin-bottom: 30px; animation: heroIn 1.5s ease-out; }
-        @keyframes heroIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        /* --- NAV / LOGO --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 25px 6%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; backdrop-filter: blur(10px); 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+        .nav-logo { width: 70px; filter: drop-shadow(0 0 10px var(--pink)); }
 
-        /* --- SECTION: DESGLOSE TÉCNICO (MOCKUPS M1-M4) --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 6%; }
-        .tech-step { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 120px; align-items: center; }
-        .tech-info h3 { font-family: 'Montserrat'; font-size: 2.5rem; color: var(--pink); margin-bottom: 15px; }
-        .tech-info p { opacity: 0.6; line-height: 1.7; }
-        .tech-visual { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
-        .tech-visual img { width: 100%; height: auto; display: block; filter: grayscale(0.2) contrast(1.1); transition: 0.5s; }
-        .tech-visual:hover img { filter: grayscale(0) contrast(1.2); transform: scale(1.05); }
+        /* --- REVELACIÓN INICIAL --- */
+        #intro {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        #intro img { width: 120px; animation: pulseLogo 2s infinite ease-in-out; }
+        @keyframes pulseLogo { 0%, 100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+
+        /* --- HERO --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+            position: relative; z-index: 10;
+        }
+        .hero h1 { 
+            font-family: 'Montserrat'; font-size: 0.65rem; letter-spacing: 15px; 
+            color: var(--pink); text-transform: uppercase; margin-top: 30px; 
+        }
+
+        /* --- CONTENEDOR SECCIONES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 100px 6%; position: relative; z-index: 10; }
+        
+        .showcase { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; 
+            margin-bottom: 150px; align-items: center; 
+        }
+        .showcase-info h2 { font-family: 'Montserrat'; font-size: 3.5rem; line-height: 0.8; margin-bottom: 25px; }
+        .showcase-info h2 span { color: var(--pink); }
+        .showcase-info p { opacity: 0.5; line-height: 1.8; border-left: 2px solid var(--pink); padding-left: 25px; }
+        
+        .showcase-img { 
+            width: 100%; border-radius: 25px; overflow: hidden; 
+            border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        .showcase-img img { width: 100%; height: auto; display: block; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .showcase-img:hover img { transform: scale(1.08); filter: brightness(1.2); }
 
         /* --- EJE DE SOLUCIONES (12 OPCIONES) --- */
-        .solutions-box { padding: 100px 0; text-align: center; }
-        .grid-12 { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 40px; }
+        .os-grid-section { text-align: center; padding-bottom: 150px; position: relative; z-index: 10; }
+        .os-grid-section h3 { font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 6px; opacity: 0.3; margin-bottom: 40px; }
+        
+        .grid-12 { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; max-width: 1000px; margin: 0 auto;
+        }
         .card { 
-            background: var(--glass); border: 1px solid var(--border); padding: 45px 10px; border-radius: 20px; 
-            cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: var(--glass); border: 1px solid var(--border); 
+            padding: 50px 10px; border-radius: 24px; cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            backdrop-filter: blur(5px);
         }
-        .card h4 { font-size: 0.65rem; letter-spacing: 2px; color: #555; font-weight: 900; pointer-events: none; }
-        .card.selected { background: #fff; border: none; transform: scale(1.05); box-shadow: 0 20px 40px rgba(255, 90, 129, 0.4); }
-        .card.selected h4 { color: #000; }
+        .card h4 { font-size: 0.6rem; letter-spacing: 3px; color: #444; font-weight: 900; }
+        .card:hover { border-color: var(--pink); transform: translateY(-10px); }
+        .card.active { background: #fff; border: none; box-shadow: 0 20px 40px rgba(255, 90, 129, 0.4); }
+        .card.active h4 { color: #000; }
 
-        /* --- BOTÓN WHATSAPP DINÁMICO --- */
-        #cta-btn { 
+        /* --- CTA WHATSAPP --- */
+        #wa-btn { 
             display: none; position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); 
-            z-index: 2000; background: var(--pink); color: #fff; padding: 22px 50px; 
+            z-index: 5000; background: #fff; color: #000; padding: 22px 60px; 
             border-radius: 100px; text-decoration: none; font-weight: 900; letter-spacing: 4px;
-            font-size: 0.7rem; box-shadow: 0 15px 40px rgba(255, 90, 129, 0.5); animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.7rem; box-shadow: 0 20px 50px rgba(255, 90, 129, 0.3); animation: slideUp 0.6s forwards;
         }
-        @keyframes pop { from { transform: translateX(-50%) scale(0); } to { transform: translateX(-50%) scale(1); } }
-
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; }
 
         /* RESPONSIVE MÓVIL */
         @media (max-width: 768px) {
-            .tech-step { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .showcase { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .showcase-info p { border-left: none; border-top: 2px solid var(--pink); padding: 25px 0 0 0; }
             .grid-12 { grid-template-columns: repeat(2, 1fr); }
-            .nav-logo { width: 60px; }
         }
     </style>
 </head>
-<body>
+<body onload="init()">
 
-<nav><img src="logo-rosa.svg" class="nav-logo"></nav>
+    <canvas id="bg-canvas"></canvas>
 
-<section class="hero">
-    <img src="logo-rosa.svg" alt="ECOS">
-    <h1 style="font-family:'Montserrat'; font-size:0.7rem; letter-spacing:12px; color:var(--pink);">ASSET INTELLIGENCE</h1>
-</section>
+    <div id="intro"><img src="logo-rosa.svg"></div>
 
-<div class="container">
-    <div class="tech-step" data-aos="fade-up">
-        <div class="tech-info">
-            <h3>M1: ESTRATEGIA</h3>
-            <p>Desde 2015, bajo la infraestructura de ORCA Studios, trazamos el camino táctico de marcas en Ecuador y Colombia.</p>
-        </div>
-        <div class="tech-visual"><img src="m1.jpg" alt="Mockup 1"></div>
-    </div>
+    <nav>
+        <img src="logo-rosa.svg" class="nav-logo">
+        <div style="font-size: 0.5rem; letter-spacing: 4px; opacity: 0.4;">EST. 2015 • ECOS OS</div>
+    </nav>
 
-    <div class="tech-step" data-aos="fade-up" style="direction: rtl;">
-        <div class="tech-info" style="direction: ltr;">
-            <h3>M2: IDENTIDAD</h3>
-            <p>Ingeniería visual para más de 20 marcas líderes que buscan blindar su posicionamiento en el mercado.</p>
-        </div>
-        <div class="tech-visual"><img src="m2.jpg" alt="Mockup 2"></div>
-    </div>
-
-    <div class="tech-step" data-aos="fade-up">
-        <div class="tech-info">
-            <h3>M3: DESARROLLO</h3>
-            <p>Creamos activos digitales de alta gama con micro-interacciones diseñadas para la fidelización.</p>
-        </div>
-        <div class="tech-visual"><img src="m3.jpg" alt="Mockup 3"></div>
-    </div>
-
-    <div class="tech-step" data-aos="fade-up" style="direction: rtl;">
-        <div class="tech-info" style="direction: ltr;">
-            <h3>M4: FIDELIZACIÓN</h3>
-            <p>Ecosistemas de marca que trascienden lo visual, enfocados en resultados estratégicos y conversión real.</p>
-        </div>
-        <div class="tech-visual"><img src="m4.jpg" alt="Mockup 4"></div>
-    </div>
-
-    <section class="solutions-box">
-        <h2 style="font-family:'Montserrat'; opacity:0.3; letter-spacing:5px;">EJE DE SOLUCIONES</h2>
-        <div class="grid-12">
-            <div class="card" onclick="select(this, 'Branding')"><h4>BRANDING</h4></div>
-            <div class="card" onclick="select(this, 'Web Pro')"><h4>WEB PRO</h4></div>
-            <div class="card" onclick="select(this, 'Video')"><h4>VIDEO</h4></div>
-            <div class="card" onclick="select(this, 'Marketing')"><h4>MARKETING</h4></div>
-            <div class="card" onclick="select(this, 'Eventos')"><h4>EVENTOS</h4></div>
-            <div class="card" onclick="select(this, 'BTL')"><h4>BTL</h4></div>
-            <div class="card" onclick="select(this, 'Estrategia')"><h4>ESTRATEGIA</h4></div>
-            <div class="card" onclick="select(this, 'UI/UX')"><h4>UI/UX</h4></div>
-            <div class="card" onclick="select(this, 'Identidad')"><h4>IDENTIDAD</h4></div>
-            <div class="card" onclick="select(this, 'Social')"><h4>SOCIAL</h4></div>
-            <div class="card" onclick="select(this, 'Activos')"><h4>ACTIVOS</h4></div>
-            <div class="card" onclick="select(this, 'Fidelización')"><h4>FIDELIZACIÓN</h4></div>
-        </div>
+    <section class="hero">
+        <img src="logo-rosa.svg" style="width: clamp(200px, 30vw, 350px);">
+        <h1>Strategic Intelligence</h1>
     </section>
-</div>
 
-<a href="#" id="cta-btn">INICIAR ASESORÍA ÉLITE</a>
+    <div class="container">
+        <section class="showcase" data-aos="fade-up">
+            <div class="showcase-info">
+                <h2>CORE<br><span>INFRA.</span></h2>
+                <p>Desde 2015, bajo la infraestructura de <strong>ORCA Studios</strong>, hemos blindado la presencia digital en Ecuador y Colombia con activos estratégicos.</p>
+            </div>
+            <div class="showcase-img"><img src="m1.jpg" alt="M1"></div>
+        </section>
 
-<a href="https://wa.me/593979010077" class="wa-float">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-</a>
+        <section class="showcase" data-aos="fade-up" style="direction: rtl;">
+            <div class="showcase-info" style="direction: ltr;">
+                <h2>ELITE<br><span>DESIGN.</span></h2>
+                <p>Ingeniería visual aplicada a más de 20 marcas líderes. No creamos contenido, desarrollamos herramientas de expansión.</p>
+            </div>
+            <div class="showcase-img"><img src="m2.jpg" alt="M2"></div>
+        </section>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({ duration: 1000, once: true });
-    
-    const chosen = new Set();
-    const btn = document.getElementById('cta-btn');
+        <section class="showcase" data-aos="fade-up">
+            <div class="showcase-info">
+                <h2>TECH<br><span>SYSTEMS.</span></h2>
+                <p>Soluciones Web Pro y UI/UX de alta fidelidad, diseñadas para una interacción inmersiva y conversión real.</p>
+            </div>
+            <div class="showcase-img"><img src="m3.jpg" alt="M3"></div>
+        </section>
 
-    function select(el, val) {
-        if(chosen.has(val)) {
-            chosen.delete(val);
-            el.classList.remove('selected');
-        } else if(chosen.size < 3) {
-            chosen.add(val);
-            el.classList.add('selected');
+        <section class="showcase" data-aos="fade-up" style="direction: rtl;">
+            <div class="showcase-info" style="direction: ltr;">
+                <h2>GLOBAL<br><span>ASSETS.</span></h2>
+                <p>Nuestra metodología OS V4.0 garantiza la fidelización premium mediante estrategias BTL y gestión de activos digitales.</p>
+            </div>
+            <div class="showcase-img"><img src="m4.jpg" alt="M4"></div>
+        </section>
+
+        <section class="os-grid-section">
+            <h3>SELECT 3 SOLUTIONS</h3>
+            <div class="grid-12">
+                <div class="card" onclick="toggleCard(this, 'Branding')"><h4>BRANDING</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Web Pro')"><h4>WEB PRO</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Marketing')"><h4>MARKETING</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Video')"><h4>VIDEO</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Eventos')"><h4>EVENTOS</h4></div>
+                <div class="card" onclick="toggleCard(this, 'BTL')"><h4>BTL</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Estrategia')"><h4>ESTRATEGIA</h4></div>
+                <div class="card" onclick="toggleCard(this, 'UI/UX')"><h4>UI/UX</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Identidad')"><h4>IDENTIDAD</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Social')"><h4>SOCIAL</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Activos')"><h4>ACTIVOS</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Fidelización')"><h4>FIDELIZACIÓN</h4></div>
+            </div>
+        </section>
+    </div>
+
+    <a id="wa-btn" href="#">SOLICITAR ACCESO ELITE</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // MOTOR DE PARTÍCULAS
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            pts = [];
+            for(let i=0; i<60; i++) {
+                pts.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
         }
 
-        if(chosen.size === 3) {
-            btn.style.display = 'block';
-            btn.href = `https://wa.me/593979010077?text=ECOS%20OS:%20Interés%20en%20${Array.from(chosen).join(', ')}`;
-        } else {
-            btn.style.display = 'none';
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ff5a81';
+            pts.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                for(let j=i+1; j<pts.length; j++) {
+                    let d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
+                    if(d < 150) {
+                        ctx.strokeStyle = `rgba(255, 90, 129, ${0.2 - d/750})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(pts[j].x, pts[j].y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
         }
-    }
-</script>
+
+        function init() {
+            initParticles();
+            animate();
+            AOS.init({ duration: 1000, once: true });
+            setTimeout(() => {
+                document.getElementById('intro').style.transform = "translateY(-100%)";
+            }, 2500);
+        }
+
+        window.onresize = initParticles;
+
+        // LÓGICA DE SELECCIÓN
+        const selected = new Set();
+        const btn = document.getElementById('wa-btn');
+
+        function toggleCard(el, val) {
+            if(selected.has(val)) {
+                selected.delete(val);
+                el.classList.remove('active');
+            } else if(selected.size < 3) {
+                selected.add(val);
+                el.classList.add('active');
+            }
+
+            if(selected.size === 3) {
+                btn.style.display = 'block';
+                btn.href = `https://wa.me/593979010077?text=ECOS%20OS%20Access:%20${Array.from(selected).join(', ')}`;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
