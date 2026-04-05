@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ECOS | Strategic Asset Intelligence</title>
+    <title>ECOS | Strategic OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -11,245 +11,129 @@
     <style>
         :root { 
             --pink: #ff5a81; 
-            --dark: #080808; 
-            --glass: rgba(20, 20, 20, 0.8);
-            --border: rgba(255, 255, 255, 0.1);
+            --dark: #050505; 
+            --card-bg: rgba(15, 15, 15, 0.9);
+            --border: rgba(255, 255, 255, 0.05);
         }
 
-        /* --- RESET ANTI-ERRORES --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { 
-            background-color: var(--dark); 
-            color: #fff; 
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            width: 100%;
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* --- 1. ESTRUCTURA: STORYTELLING HORIZONTAL (Referente Video 1) --- */
+        .story-slider {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            padding: 100px 5%; gap: 30px; scrollbar-width: none;
+        }
+        .story-card {
+            min-width: 85vw; scroll-snap-align: center; background: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 30px; padding: 40px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            min-height: 500px; position: relative; overflow: hidden;
+        }
+        .story-card h2 { font-family: 'Montserrat'; font-size: 3rem; color: var(--pink); line-height: 0.9; margin-bottom: 20px; }
+        .story-card p { opacity: 0.6; font-size: 1.1rem; line-height: 1.6; max-width: 500px; }
+        .story-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, var(--dark), transparent); z-index: -1;
         }
 
-        /* --- FONDO ANIMADO (LIVIANO) --- */
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.4; pointer-events: none; }
-
-        /* --- HEADER --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 6%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-            backdrop-filter: blur(10px);
+        /* --- 2. ESTRUCTURA: DESGLOSE TÉCNICO REVEAL (Referente Video 3) --- */
+        .technical-breakdown { padding: 120px 8%; background: #0a0a0a; }
+        .tech-step { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; 
+            margin-bottom: 150px; align-items: center; 
         }
-        .nav-logo { width: 70px; filter: drop-shadow(0 0 10px var(--pink)); }
-
-        /* --- HERO (LOGO PRINCIPAL) --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; 
-            position: relative; z-index: 10; padding: 20px;
-        }
-
-        .hero-logo-wrap {
-            width: clamp(240px, 45vw, 420px);
-            animation: float 5s ease-in-out infinite;
-        }
-        @keyframes float { 
-            0%, 100% { transform: translateY(0); filter: brightness(1); }
-            50% { transform: translateY(-20px); filter: brightness(1.2); }
-        }
-        .hero-logo-wrap img { width: 100%; height: auto; }
-
-        .hero h1 { 
-            font-family: 'Montserrat'; font-size: 0.7rem; 
-            letter-spacing: 10px; text-transform: uppercase; 
-            color: var(--pink); margin-top: 30px; text-align: center;
-        }
-
-        /* --- CONTENEDOR MAESTRO --- */
-        .container {
-            position: relative; z-index: 100; max-width: 1200px; 
-            margin: 0 auto; padding: 100px 6%;
-        }
-
-        /* --- BLOQUES DE INFORMACIÓN --- */
-        .info-block {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px; margin-bottom: 150px; align-items: center;
-        }
-
-        .giant-title {
-            font-family: 'Montserrat'; font-size: clamp(3rem, 10vw, 6rem);
-            line-height: 0.9; letter-spacing: -3px;
-        }
-        .giant-title span { color: var(--pink); }
-
-        .desc-text {
-            font-size: 1.1rem; font-weight: 300; opacity: 0.7;
-            border-left: 2px solid var(--pink); padding-left: 25px;
-        }
-
-        /* --- SELECTOR DE SERVICIOS (RESPONSIVE REAL) --- */
-        .selector-box { text-align: center; margin-bottom: 100px; }
-        .selector-box h2 { font-family: 'Montserrat'; opacity: 0.3; letter-spacing: 5px; margin-bottom: 40px; }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-        }
-
-        .card {
-            background: var(--glass); border: 1px solid var(--border);
-            padding: 40px 10px; border-radius: 18px; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card h3 { font-size: 0.65rem; letter-spacing: 2px; color: #666; font-weight: 900; }
-
-        .card:hover { border-color: var(--pink); transform: translateY(-5px); }
-        .card.active { background: #fff; border: none; box-shadow: 0 15px 35px rgba(255, 90, 129, 0.3); }
-        .card.active h3 { color: #000; }
-
-        /* --- BOTONES Y ACCIONES --- */
-        .cta-wrap { margin-top: 60px; min-height: 100px; display: flex; justify-content: center; }
-        
-        .btn-wa {
-            display: none; padding: 22px 50px; background: #fff; color: #000;
-            text-decoration: none; font-weight: 900; letter-spacing: 4px;
-            border-radius: 100px; text-transform: uppercase; font-size: 0.75rem;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
-        }
-
-        /* --- BOTÓN FLOTANTE --- */
-        .wa-float {
-            position: fixed; bottom: 30px; right: 30px; z-index: 2000;
-            background: #25d366; width: 60px; height: 60px; border-radius: 50%;
+        .tech-number { font-family: 'Montserrat'; font-size: 8rem; opacity: 0.05; position: absolute; left: -50px; z-index: 0; }
+        .tech-info { position: relative; z-index: 10; }
+        .tech-info h3 { font-family: 'Montserrat'; font-size: 2rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .tech-visual { 
+            width: 100%; aspect-ratio: 16/9; background: var(--border); 
+            border-radius: 20px; border: 1px solid var(--pink); 
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-        .wa-float svg { fill: #fff; width: 30px; }
-
-        footer {
-            padding: 80px 0; text-align: center; border-top: 1px solid var(--border);
-            font-size: 0.6rem; letter-spacing: 5px; opacity: 0.3;
         }
 
-        /* --- CORRECCIÓN MÓVIL --- */
+        /* --- 3. ESTRUCTURA: EJE DE SOLUCIONES ELITE (Referente Video 4) --- */
+        .solutions-os { padding: 100px 5%; text-align: center; }
+        .os-tag { font-size: 0.6rem; letter-spacing: 5px; color: var(--pink); margin-bottom: 20px; display: block; }
+        .asset-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; margin-top: 50px;
+        }
+        .asset-card {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+            padding: 60px 20px; border-radius: 25px; cursor: pointer;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .asset-card:hover { border-color: var(--pink); transform: translateY(-15px); background: rgba(255,90,129,0.03); }
+        .asset-card h4 { font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 3px; color: #444; }
+        .asset-card.selected { background: #fff; border: none; }
+        .asset-card.selected h4 { color: #000; }
+
+        /* MÓVIL */
         @media (max-width: 768px) {
-            .services-grid { grid-template-columns: repeat(2, 1fr); }
-            .giant-title { text-align: center; }
-            .desc-text { border-left: none; border-top: 2px solid var(--pink); padding: 25px 0; text-align: center; }
+            .tech-step { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .tech-number { font-size: 5rem; left: 0; top: -30px; }
+            .asset-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .asset-card { padding: 40px 10px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-
-    <nav>
-        <img src="logo-rosa.svg" class="nav-logo" alt="ECOS">
-        <div style="font-size: 0.5rem; letter-spacing: 3px; opacity: 0.5;">QUITO • MEDELLÍN</div>
-    </nav>
-
-    <section class="hero">
-        <div class="hero-logo-wrap">
-            <img src="logo-rosa.svg" alt="ECOS Elite">
+    <div class="story-slider">
+        <div class="story-card" data-aos="fade-right">
+            <h2>DESDE<br>2015<span>.</span></h2>
+            <p>Bajo la infraestructura de ORCA Studios, ECOS nace como la respuesta táctica para marcas que buscan dominar el entorno digital en Ecuador y Colombia.</p>
         </div>
-        <h1 data-aos="fade-up">Elite Asset Infrastructure</h1>
-    </section>
-
-    <div class="container">
-        
-        <section class="info-block">
-            <div class="giant-title" data-aos="fade-right">STRATEGIC<br>ENGINE<span>.</span></div>
-            <div class="desc-text" data-aos="fade-left">
-                Desde 2015, bajo la infraestructura técnica de <strong>ORCA Studios</strong>, hemos blindado la presencia digital de marcas líderes en <strong>Ecuador y Colombia</strong>. No diseñamos, creamos activos.
-            </div>
-        </section>
-
-        <section class="selector-box">
-            <h2 id="msg">SELECCIONA 3 EJES</h2>
-            <div class="services-grid">
-                <div class="card" data-id="Fidelización"><h3>FIDELIZACIÓN</h3></div>
-                <div class="card" data-id="Branding"><h3>BRANDING</h3></div>
-                <div class="card" data-id="Activos"><h3>ACTIVOS</h3></div>
-                <div class="card" data-id="Web Pro"><h3>WEB PRO</h3></div>
-                <div class="card" data-id="Marketing"><h3>MARKETING</h3></div>
-                <div class="card" data-id="Producción"><h3>VIDEO</h3></div>
-                <div class="card" data-id="Identidad"><h3>IDENTIDAD</h3></div>
-                <div class="card" data-id="Estrategia"><h3>ESTRATEGIA</h3></div>
-                <div class="card" data-id="BTL"><h3>BTL</h3></div>
-                <div class="card" data-id="Eventos"><h3>EVENTOS</h3></div>
-                <div class="card" data-id="Social"><h3>SOCIAL</h3></div>
-                <div class="card" data-id="UI/UX"><h3>UI/UX</h3></div>
-            </div>
-            <div class="cta-wrap">
-                <a href="#" id="mainBtn" class="btn-wa">SOLICITAR ACCESO ÉLITE</a>
-            </div>
-        </section>
-
+        <div class="story-card" data-aos="fade-right">
+            <h2>+20<br>MARCAS<span>.</span></h2>
+            <p>No somos una agencia convencional. Somos consultores de alto rendimiento que han blindado el crecimiento de más de 20 marcas líderes.</p>
+        </div>
+        <div class="story-card" data-aos="fade-right">
+            <h2>ALTA<br>GAMA<span>.</span></h2>
+            <p>Nuestra metodología combina ingeniería visual con estrategias de fidelización premium. Creamos activos, no solo contenido.</p>
+        </div>
     </div>
 
-    <a href="https://wa.me/593979010077" class="wa-float">
-        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-    </a>
+    <section class="technical-breakdown">
+        <div class="tech-step">
+            <div class="tech-info" data-aos="fade-up">
+                <span class="tech-number">01</span>
+                <h3>ANÁLISIS DE ADN</h3>
+                <p>Desglosamos la identidad de tu marca hasta su nivel molecular para entender su potencial real en el mercado.</p>
+            </div>
+            <div class="tech-visual" data-aos="zoom-in">
+                <div style="color: var(--pink); opacity: 0.3;">[ MOCKUP ECOS OS ]</div>
+            </div>
+        </div>
 
-    <footer>
-        © 2026 ECOS SYSTEM • ORCA STUDIOS INFRASTRUCTURE
-    </footer>
+        <div class="tech-step" style="direction: rtl;">
+            <div class="tech-info" data-aos="fade-up" style="direction: ltr;">
+                <span class="tech-number">02</span>
+                <h3>INGENIERÍA VISUAL</h3>
+                <p>Desarrollamos interfaces y branding de élite que no solo se ven bien, sino que están diseñados para convertir.</p>
+            </div>
+            <div class="tech-visual" data-aos="zoom-in">
+                <div style="color: var(--pink); opacity: 0.3;">[ BRANDING REVEAL ]</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solutions-os">
+        <span class="os-tag">SISTEMA DE ACTIVOS ECOS</span>
+        <h2 style="font-family: 'Montserrat'; font-size: 2.5rem; line-height: 0.9;">SELECCIONA<br>TU ESTRATEGIA<span>.</span></h2>
+        
+        <div class="asset-grid">
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>BRANDING</h4></div>
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>WEB PRO</h4></div>
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>ESTRATEGIA</h4></div>
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>VIDEO</h4></div>
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>EVENTOS</h4></div>
+            <div class="asset-card" onclick="this.classList.toggle('selected')"><h4>BTL</h4></div>
+        </div>
+    </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000 });
-
-        // MOTOR DE PARTÍCULAS (MÁS ESTABLE)
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let pts = [];
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            pts = [];
-            for(let i=0; i<50; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4});
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = '#ff5a81';
-            pts.forEach((p,i)=>{
-                p.x+=p.vx; p.y+=p.vy;
-                if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
-                ctx.beginPath(); ctx.arc(p.x,p.y,1,0,Math.PI*2); ctx.fill();
-                for(let j=i+1; j<pts.length; j++) {
-                    let d = Math.hypot(p.x-pts[j].x, p.y-pts[j].y);
-                    if(d<120) { ctx.strokeStyle=`rgba(255,90,129,${0.15-d/600})`; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(pts[j].x,pts[j].y); ctx.stroke(); }
-                }
-            });
-            requestAnimationFrame(draw);
-        }
-        init(); draw(); window.onresize = init;
-
-        // LÓGICA DE SELECCIÓN
-        const selected = new Set();
-        const cards = document.querySelectorAll('.card');
-        const btn = document.getElementById('mainBtn');
-        const msg = document.getElementById('msg');
-
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                const id = card.getAttribute('data-id');
-                if(selected.has(id)) {
-                    selected.delete(id); card.classList.remove('active');
-                } else if(selected.size < 3) {
-                    selected.add(id); card.classList.add('active');
-                }
-
-                if(selected.size === 3) {
-                    msg.innerText = "CONFIGURACIÓN COMPLETA";
-                    msg.style.color = "#ff5a81";
-                    btn.style.display = "block";
-                    btn.href = `https://wa.me/593979010077?text=ECOS%20Config:%20${Array.from(selected).join(', ')}`;
-                } else {
-                    msg.innerText = `SELECCIONA ${3 - selected.size} MÁS`;
-                    msg.style.color = "#fff";
-                    btn.style.display = "none";
-                }
-            });
-        });
-    </script>
+    <script>AOS.init({ duration: 1200, once: true });</script>
 </body>
 </html>
- 
