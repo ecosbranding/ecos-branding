@@ -359,22 +359,41 @@ document.getElementById('wa-btn').addEventListener('click', function(e) {
         }
 
         window.onresize = initParticles;
+// --- LÓGICA DE TARJETAS ---
+const selected = new Set();
+const btn = document.getElementById('wa-btn');
 
-        // --- LÓGICA DE TARJETAS ---
-        const selected = new Set();
-        const btn = document.getElementById('wa-btn');
-
-        function toggleCard(el, val) {
+function toggleCard(el, val) {
     if (selected.has(val)) {
         selected.delete(val);
-        el.classList.remove('active', 'selected'); // Añadimos selected aquí
+        el.classList.remove('active', 'selected');
     } else if (selected.size < 3) {
         selected.add(val);
-        el.classList.add('active', 'selected'); // Añadimos selected aquí
+        el.classList.add('active', 'selected');
     }
-        }
-            }
-        }
+} // <--- Aquí cerramos la función toggleCard
+
+// --- LÓGICA DEL BOTÓN WHATSAPP (Fuera de la función anterior) ---
+document.getElementById('wa-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const seleccionadas = Array.from(selected); 
+    
+    let mensajeBase = "Hola ECOS. He seleccionado mis activos tácticos";
+    
+    if (seleccionadas.length > 0) {
+        mensajeBase += " en las áreas de: " + seleccionadas.join(', ') + ".";
+    } else {
+        mensajeBase += ".";
+    }
+    
+    mensajeBase += " Solicito evaluación para elevar el impacto de mi proyecto bajo su ingeniería estratégica.";
+
+    const waUrl = "https://wa.me/593979010077?text=" + encodeURIComponent(mensajeBase);
+    window.open(waUrl, '_blank');
+});
+
+window.onload = init; // Esto quita la pantalla negra al cargar
+
     </script>
 </body>
 </html>
