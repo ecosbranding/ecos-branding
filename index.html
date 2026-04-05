@@ -16,17 +16,18 @@
             --border: rgba(255, 255, 255, 0.08); 
         }
 
-        /* --- BASE --- */
+        /* --- BASE Y SEGURIDAD --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { 
             background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden;
-            -webkit-user-select: none; user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
+
         img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
 
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.6; }
 
-        /* --- NAV --- */
+        /* --- NAV / LOGO --- */
         nav { 
             position: fixed; top: 0; width: 100%; padding: 20px 6%; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -34,13 +35,15 @@
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
         .nav-logo { width: 70px; filter: drop-shadow(0 0 10px var(--pink)); }
-        .nav-card-link {
+        .nav-link-card {
             font-size: 0.6rem; letter-spacing: 2px; color: var(--pink);
             text-decoration: none; border: 1px solid var(--pink);
-            padding: 8px 18px; border-radius: 50px; font-weight: 900; transition: 0.4s;
+            padding: 8px 15px; border-radius: 50px; font-weight: 700;
+            transition: 0.3s;
         }
+        .nav-link-card:hover { background: var(--pink); color: #000; }
 
-        /* --- INTRO --- */
+        /* --- INTRO REVEAL --- */
         #intro {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
@@ -49,45 +52,78 @@
         #intro img { width: 120px; animation: pulseLogo 2s infinite ease-in-out; }
         @keyframes pulseLogo { 0%, 100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* --- HERO CORREGIDO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; padding: 0 10%; }
+        /* --- HERO --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+            position: relative; z-index: 10;
+        }
         .hero h1 { 
-            font-family: 'Montserrat'; 
-            font-size: 0.8rem; 
-            letter-spacing: 12px; 
-            color: var(--pink); 
-            text-transform: uppercase; 
-            margin-top: 25px;
-            text-align: center;
-            width: 100%;
+            font-family: 'Montserrat'; font-size: 0.65rem; letter-spacing: 15px; 
+            color: var(--pink); text-transform: uppercase; margin-top: 30px; 
         }
 
-        /* --- SECCIONES --- */
+        /* --- SECCIONES MOCKUPS --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 100px 6%; position: relative; z-index: 10; }
-        .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 150px; align-items: center; }
-        .showcase-info h2 { font-family: 'Montserrat'; font-size: 3.5rem; line-height: 0.8; margin-bottom: 25px; }
+        
+        .showcase { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; 
+            margin-bottom: 150px; align-items: center; 
+        }
+        .showcase-info h2 { font-family: 'Montserrat'; font-size: 3.5rem; line-height: 0.8; margin-bottom: 25px; word-wrap: break-word; }
         .showcase-info h2 span { color: var(--pink); }
         .showcase-info p { opacity: 0.5; line-height: 1.8; border-left: 2px solid var(--pink); padding-left: 25px; margin-bottom: 30px; }
         
-        .btn-action {
-            display: inline-block; color: #fff; text-decoration: none; font-weight: 900; 
-            font-size: 0.7rem; letter-spacing: 3px; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border); padding: 18px 35px; border-radius: 50px; transition: 0.4s;
+        .btn-outline {
+            display: inline-block; color: var(--pink); text-decoration: none; font-weight: 900; 
+            font-size: 0.7rem; letter-spacing: 3px; border: 1px solid var(--pink); 
+            padding: 15px 30px; border-radius: 50px; transition: 0.4s;
         }
+        .btn-outline:hover { background: var(--pink); color: #000; box-shadow: 0 0 20px var(--pink); }
 
-        .showcase-img { width: 100%; border-radius: 25px; overflow: hidden; border: 1px solid var(--border); }
-        .showcase-img img { width: 100%; display: block; }
+        .showcase-img { 
+            width: 100%; border-radius: 25px; overflow: hidden; 
+            border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        .showcase-img img { width: 100%; height: auto; display: block; transition: 0.8s; }
 
-        /* --- GRID --- */
+        /* --- SOLUCIONES --- */
         .os-grid-section { text-align: center; padding-bottom: 100px; position: relative; z-index: 10; }
-        .grid-12 { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; max-width: 1000px; margin: 0 auto; }
-        .card { background: var(--glass); border: 1px solid var(--border); padding: 50px 10px; border-radius: 24px; cursor: pointer; transition: 0.4s; }
+        .os-grid-section h3 { font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 6px; opacity: 0.3; margin-bottom: 40px; }
+        
+        .grid-12 { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; max-width: 1000px; margin: 0 auto;
+        }
+        .card { 
+            background: var(--glass); border: 1px solid var(--border); 
+            padding: 50px 10px; border-radius: 24px; cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            backdrop-filter: blur(5px);
+        }
         .card h4 { font-size: 0.6rem; letter-spacing: 3px; color: #444; font-weight: 900; }
-        .card.active { background: rgba(255, 90, 129, 0.15); border: 1px solid var(--pink); transform: translateY(-5px); }
+        
+        .card.active { 
+            background: rgba(255, 90, 129, 0.15); 
+            border: 1px solid var(--pink); 
+            box-shadow: 0 0 30px rgba(255, 90, 129, 0.2);
+            transform: translateY(-5px);
+        }
         .card.active h4 { color: #fff; text-shadow: 0 0 10px var(--pink); }
 
-        footer { padding: 50px 6%; text-align: center; border-top: 1px solid var(--border); opacity: 0.4; font-size: 0.7rem; letter-spacing: 2px; }
+        /* --- FOOTER --- */
+        footer {
+            padding: 50px 6%; text-align: center; border-top: 1px solid var(--border);
+            position: relative; z-index: 10; opacity: 0.4; font-size: 0.7rem; letter-spacing: 2px;
+        }
 
+        /* --- BOTONES Y WA --- */
+        .wa-floating {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: #25d366; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; z-index: 4000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: 0.3s;
+        }
         #wa-btn { 
             display: none; position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%); 
             z-index: 5000; background: #fff; color: #000; padding: 22px 60px; 
@@ -95,17 +131,12 @@
             font-size: 0.7rem; box-shadow: 0 20px 50px rgba(255, 90, 129, 0.3);
         }
 
-        /* --- MEDIA QUERIES CORRECCIONES --- */
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            .hero h1 { 
-                font-size: 0.6rem; 
-                letter-spacing: 6px; /* Reducido para que no se vea desbordado en móvil */
-                margin-top: 15px;
-            }
-            .showcase { grid-template-columns: 1fr; text-align: center; }
-            .showcase-info h2 { font-size: 1.8rem; line-height: 1.2; }
-            .nav-card-link { display: none; }
+            .showcase { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .showcase-info h2 { font-size: 1.8rem; letter-spacing: 2px; line-height: 1.2; }
             .grid-12 { grid-template-columns: repeat(2, 1fr); }
+            .nav-link-card { display: none; } /* Oculto en móvil para no saturar el header */
         }
     </style>
 </head>
@@ -116,11 +147,11 @@
 
     <nav>
         <img src="logo-rosa.svg" class="nav-logo">
-        <a href="https://orca-ecos-asset.vercel.app/" target="_blank" class="nav-card-link">ACCESO CLIENTES</a>
+        <a href="https://orca-ecos-asset.vercel.app/" target="_blank" class="nav-link-card">MI TARJETA DIGITAL</a>
     </nav>
 
     <section class="hero">
-        <img src="logo-rosa.svg" style="width: 280px; max-width: 80vw;">
+        <img src="logo-rosa.svg" style="width: clamp(200px, 30vw, 350px);">
         <h1>Inteligencia Estratégica</h1>
     </section>
 
@@ -128,67 +159,140 @@
         <section class="showcase" data-aos="fade-up">
             <div class="showcase-info">
                 <h2>INFRAESTRUCTURA<br><span>CORE.</span></h2>
-                <p>Desde 2015, blindamos marcas con activos tácticos en la región.</p>
+                <p>Desde 2015, bajo el respaldo de <strong>ORCA Studios</strong>, blindamos la presencia de marcas en Ecuador y Colombia con activos tácticos.</p>
             </div>
             <div class="showcase-img"><img src="m1.png"></div>
         </section>
 
+        <section class="showcase" data-aos="fade-up" style="direction: rtl;">
+            <div class="showcase-info" style="direction: ltr;">
+                <h2>DISEÑO DE<br><span>ÉLITE.</span></h2>
+                <p>Ingeniería visual para marcas líderes. Desarrollamos herramientas de expansión y fidelización con estética premium.</p>
+            </div>
+            <div class="showcase-img"><img src="m2.png"></div>
+        </section>
+
         <section class="showcase" data-aos="fade-up">
             <div class="showcase-info">
-                <h2>FIDELIDAD<br><span>WEB APP.</span></h2>
-                <p>Nuestra nueva herramienta de retención digital para gestionar beneficios en tiempo real.</p>
-                <a href="https://orca-ecos-asset.vercel.app/" target="_blank" class="btn-action">EXPLORAR TARJETA</a>
+                <h2>SISTEMAS<br><span>TECH.</span></h2>
+                <p>Interfaces Web Pro y UI/UX de alta fidelidad, optimizadas para una interacción inmersiva y resultados reales.</p>
             </div>
-            <div class="showcase-img"><img src="m5.png"></div>
+            <div class="showcase-img"><img src="m3.png"></div>
+        </section>
+
+        <section class="showcase" data-aos="fade-up" style="direction: rtl;">
+            <div class="showcase-info" style="direction: ltr;">
+                <h2>ACTIVOS<br><span>GLOBALES.</span></h2>
+                <p>Metodología OS V4.0: Gestión de activos digitales y estrategias BTL enfocadas en el posicionamiento de impacto.</p>
+            </div>
+            <div class="showcase-img"><img src="m4.png"></div>
+        </section>
+
+        <section class="showcase" data-aos="fade-up">
+            <div class="showcase-info">
+                <h2>FIDELIDAD<br><span>DIGITAL.</span></h2>
+                <p>Presentamos nuestra llave de acceso exclusiva. Gestiona tus beneficios y recompensas directamente desde tu dispositivo.</p>
+                <a href="https://orca-ecos-asset.vercel.app/" target="_blank" class="btn-outline">LANZAR TARJETA WEB</a>
+            </div>
+            <div class="showcase-img"><img src="m5.png" alt="Tarjeta Fidelidad"></div>
         </section>
 
         <section class="os-grid-section">
-            <h3 style="font-family: 'Montserrat'; font-size: 0.7rem; letter-spacing: 5px; opacity: 0.3; margin-bottom: 40px;">SELECCIONA 3 SOLUCIONES</h3>
+            <h3>SELECCIONA 3 SOLUCIONES</h3>
             <div class="grid-12">
-                <div class="card" onclick="toggleCard(this, 'Fidelización')"><h4>FIDELIZACIÓN</h4></div>
-                <div class="card" onclick="toggleCard(this, 'Web Pro')"><h4>WEB PRO</h4></div>
                 <div class="card" onclick="toggleCard(this, 'Branding')"><h4>BRANDING</h4></div>
-                </div>
+                <div class="card" onclick="toggleCard(this, 'Web Pro')"><h4>WEB PRO</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Marketing')"><h4>MARKETING</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Producción')"><h4>VIDEO</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Eventos')"><h4>EVENTOS</h4></div>
+                <div class="card" onclick="toggleCard(this, 'BTL')"><h4>BTL</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Estrategia')"><h4>ESTRATEGIA</h4></div>
+                <div class="card" onclick="toggleCard(this, 'UI/UX')"><h4>UI/UX</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Identidad')"><h4>IDENTIDAD</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Social')"><h4>SOCIAL</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Activos')"><h4>ACTIVOS</h4></div>
+                <div class="card" onclick="toggleCard(this, 'Fidelización')"><h4>FIDELIZACIÓN</h4></div>
+            </div>
         </section>
     </div>
 
-    <footer>© 2026 ECOS. TODOS LOS DERECHOS RESERVADOS.</footer>
+    <footer>
+        © 2026 ECOS. TODOS LOS DERECHOS RESERVADOS.
+    </footer>
+
+    <a href="https://wa.me/593979010077" class="wa-floating" target="_blank">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
 
     <a id="wa-btn" href="#">SOLICITAR ACCESO ÉLITE</a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let pts = [];
 
         function initParticles() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             pts = [];
-            for(let i=0; i<50; i++) pts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4});
+            for(let i=0; i<60; i++) {
+                pts.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
         }
 
         function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#ff5a81';
-            pts.forEach((p,i) => {
-                p.x+=p.vx; p.y+=p.vy;
-                if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
-                ctx.beginPath(); ctx.arc(p.x,p.y,1,0,Math.PI*2); ctx.fill();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ff5a81';
+            pts.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2); ctx.fill();
+                for(let j=i+1; j<pts.length; j++) {
+                    let d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
+                    if(d < 150) {
+                        ctx.strokeStyle = `rgba(255, 90, 129, ${0.15 - d/1000})`;
+                        ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+                    }
+                }
             });
             requestAnimationFrame(animate);
         }
 
-        function init() { initParticles(); animate(); AOS.init(); setTimeout(() => document.getElementById('intro').style.transform="translateY(-100%)", 2000); }
-        
+        function init() {
+            initParticles(); animate();
+            AOS.init({ duration: 1000, once: true });
+            setTimeout(() => { document.getElementById('intro').style.transform = "translateY(-100%)"; }, 2500);
+        }
+
+        window.onresize = initParticles;
+
         const selected = new Set();
         const btn = document.getElementById('wa-btn');
+
         function toggleCard(el, val) {
-            selected.has(val) ? (selected.delete(val), el.classList.remove('active')) : (selected.size < 3 && (selected.add(val), el.classList.add('active')));
+            if(selected.has(val)) {
+                selected.delete(val);
+                el.classList.remove('active');
+            } else if(selected.size < 3) {
+                selected.add(val);
+                el.classList.add('active');
+            }
+
             if(selected.size === 3) {
                 btn.style.display = 'block';
-                btn.href = `https://wa.me/593979010077?text=Interés en: ${Array.from(selected).join(', ')}`;
-            } else { btn.style.display = 'none'; }
+                btn.href = `https://wa.me/593979010077?text=Acceso%20ECOS:%20Interés%20en%20${Array.from(selected).join(', ')}`;
+            } else {
+                btn.style.display = 'none';
+            }
         }
     </script>
 </body>
