@@ -99,7 +99,7 @@
         @media (max-width: 768px) {
             .hero h1 { 
                 font-size: 0.6rem; 
-                letter-spacing: 6px; 
+                letter-spacing: 6px; /* Reducido para que no se vea desbordado en móvil */
                 margin-top: 15px;
             }
             .showcase { grid-template-columns: 1fr; text-align: center; }
@@ -148,7 +148,7 @@
                 <div class="card" onclick="toggleCard(this, 'Fidelización')"><h4>FIDELIZACIÓN</h4></div>
                 <div class="card" onclick="toggleCard(this, 'Web Pro')"><h4>WEB PRO</h4></div>
                 <div class="card" onclick="toggleCard(this, 'Branding')"><h4>BRANDING</h4></div>
-            </div>
+                </div>
         </section>
     </div>
 
@@ -158,77 +158,107 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // --- NÚCLEO DE INTERACCIÓN ECOS ---
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let pts = [];
+let mouse = { x: null, y: null };
+
+// EVENTO RATÓN (PC)
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+});
+
+// EVENTO TÁCTIL (MÓVIL)
+window.addEventListener('touchmove', (e) => {
+    // Evita el scroll accidental mientras juegas con las partículas
+    if(e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+    }
+}, { passive: false });
+
+// LIMPIEZA (Al soltar o salir)
+const stopTracking = () => { mouse.x = null; mouse.y = null; };
+window.addEventListener('touchend', stopTracking);
+window.addEventListener('mouseout', stopTracking);
+
+function initParticles() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    pts = [];
+    // Optimización: Menos puntos en móvil para mayor fluidez
+    const count = window.innerWidth < 768 ? 45 : 70; 
+    
+    for(let i=0; i<count; i++) {
+        pts.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ff5a81'; // Color Rosa ECOS
+    
+    pts.forEach((p, i) => {
+        p.x += p.vx; p.y += p.vy;
+
+        // Lógica de Atracción Dual (Dedo o Ratón)
+        if (mouse.x !== null && mouse.y !== null) {
+            let dx = mouse.x - p.x;
+            let dy = mouse.y - p.y;
+            let dist = Math.hypot(dx, dy);
+            
+            if (dist < 180) {
+                p.x += dx * 0.03; 
+                p.y += dy * 0.03;
+            }
+        }
+
+        // Rebotes
+        if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        // Dibujo de Red
+        ctx.beginPath(); ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2); ctx.fill();
+
+        for(let j=i+1; j<pts.length; j++) {
+            let d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
+            if(d < 150) {
+                ctx.strokeStyle = `rgba(255, 90, 129, ${0.18 - d/800})`;
+                ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+            }
+        }
+    });
+    requestAnimationFrame(animate);
+}
         document.addEventListener('contextmenu', e => e.preventDefault());
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let pts = [];
-        let mouse = { x: null, y: null };
-
-        // Seguimiento de interacción (Mouse y Touch)
-        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-        window.addEventListener('touchmove', e => {
-            if(e.touches.length > 0) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
-        }, { passive: false });
-        window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
-        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
         function initParticles() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             pts = [];
-            const count = window.innerWidth < 768 ? 40 : 60;
-            for(let i=0; i<count; i++) {
-                pts.push({
-                    x: Math.random()*canvas.width, 
-                    y: Math.random()*canvas.height, 
-                    vx: (Math.random()-0.5)*0.4, 
-                    vy: (Math.random()-0.5)*0.4
-                });
-            }
+            for(let i=0; i<50; i++) pts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4});
         }
 
         function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height); 
-            ctx.fillStyle = '#ff5a81';
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#ff5a81';
             pts.forEach((p,i) => {
                 p.x+=p.vx; p.y+=p.vy;
-
-                // Interacción: los puntos huyen suavemente del cursor/dedo
-                if(mouse.x != null) {
-                    let dx = mouse.x - p.x;
-                    let dy = mouse.y - p.y;
-                    let dist = Math.hypot(dx, dy);
-                    if(dist < 150) {
-                        p.x -= dx * 0.02;
-                        p.y -= dy * 0.02;
-                    }
-                }
-
-                if(p.x<0||p.x>canvas.width) p.vx*=-1; 
-                if(p.y<0||p.y>canvas.height) p.vy*=-1;
-                
-                ctx.beginPath(); ctx.arc(p.x,p.y,1.2,0,Math.PI*2); ctx.fill();
-
-                // Dibujar líneas entre puntos cercanos (Efecto Plexus)
-                for(let j=i+1; j<pts.length; j++) {
-                    let d = Math.hypot(p.x - pts[j].x, p.y - pts[j].y);
-                    if(d < 150) {
-                        ctx.strokeStyle = `rgba(255, 90, 129, ${0.2 - d/750})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
-                    }
-                }
+                if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
+                ctx.beginPath(); ctx.arc(p.x,p.y,1,0,Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(animate);
         }
 
-        function init() { 
-            initParticles(); 
-            animate(); 
-            AOS.init(); 
-            setTimeout(() => document.getElementById('intro').style.transform="translateY(-100%)", 2000); 
-        }
-        
-        window.onresize = initParticles;
+        function init() { initParticles(); animate(); AOS.init(); setTimeout(() => document.getElementById('intro').style.transform="translateY(-100%)", 2000); }
         
         const selected = new Set();
         const btn = document.getElementById('wa-btn');
